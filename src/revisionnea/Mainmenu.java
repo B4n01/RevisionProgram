@@ -43,6 +43,11 @@ public class Mainmenu extends javax.swing.JFrame {
         jLabel2.setText("Welcome to the main menu!");
 
         jButton1.setText("Revise");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Create new cards");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -122,6 +127,11 @@ public class Mainmenu extends javax.swing.JFrame {
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        new Revisecards().setVisible(true);
+        new Mainmenu().setVisible(false);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
