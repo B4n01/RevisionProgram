@@ -5,6 +5,8 @@
  */
 package revisionnea;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author BG201054
@@ -186,9 +188,17 @@ public class SignupScreen extends javax.swing.JFrame {
         String confpswrd = ConfPswd.getText();
         String useremail = EmailTF.getText();
         String useremailconf = ConfEmail.getText();
-        String userSchool = SchoolsList.getName();
-        if(password==confpswrd && useremail == useremailconf){
+        String userSchool = SchoolsList.getSelectedValue();
+        if(password.equals(confpswrd) && useremail.equals(useremailconf)){
             
+            String Hpassword = hashing.Hashpassword(password);
+            User newuser = new User(name,username,Hpassword,useremail,userSchool);
+            
+            repository.insertNewUser(newuser);
+            JOptionPane.showMessageDialog(null, "Welcome "+name+"!");
+            LoginScreen x = new LoginScreen();
+            x.setVisible(true);
+            this.dispose();
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

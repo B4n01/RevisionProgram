@@ -1,14 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package revisionnea;
 
-/**
- *
- * @author BG201054
- */
+import revisionnea.repository;
 public class LoginScreen extends javax.swing.JFrame {
 
     /**
@@ -16,6 +9,7 @@ public class LoginScreen extends javax.swing.JFrame {
      */
     public LoginScreen() {
         initComponents();
+        incorrectinput.setVisible(false);
     }
 
     /**
@@ -32,10 +26,11 @@ public class LoginScreen extends javax.swing.JFrame {
         Usernametext = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        Passwordtext = new javax.swing.JTextField();
         Loginbutton = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         Signupbutton = new javax.swing.JButton();
+        Passwordtext = new javax.swing.JPasswordField();
+        incorrectinput = new javax.swing.JLabel();
 
         jLabel1.setText("jLabel1");
 
@@ -56,6 +51,11 @@ public class LoginScreen extends javax.swing.JFrame {
         jLabel4.setText("Password:");
 
         Loginbutton.setText("Login");
+        Loginbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LoginbuttonActionPerformed(evt);
+            }
+        });
 
         jLabel5.setText("Don't have an account? Sign up here:");
 
@@ -66,6 +66,16 @@ public class LoginScreen extends javax.swing.JFrame {
             }
         });
 
+        Passwordtext.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PasswordtextActionPerformed(evt);
+            }
+        });
+
+        incorrectinput.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        incorrectinput.setForeground(new java.awt.Color(240, 0, 0));
+        incorrectinput.setText("Sorry that Username or password was incorrect.");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -75,19 +85,23 @@ public class LoginScreen extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 56, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 519, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(Loginbutton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
-                            .addComponent(Passwordtext, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Usernametext, javax.swing.GroupLayout.Alignment.LEADING))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(Loginbutton, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
+                                .addComponent(Usernametext, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addComponent(Passwordtext, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel5)
-                        .addGap(18, 18, 18)
-                        .addComponent(Signupbutton, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(150, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(18, 18, 18)
+                                .addComponent(Signupbutton, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(incorrectinput, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(145, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -103,7 +117,8 @@ public class LoginScreen extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(Passwordtext, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Passwordtext, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(incorrectinput))
                 .addGap(18, 18, 18)
                 .addComponent(Loginbutton)
                 .addContainerGap(23, Short.MAX_VALUE))
@@ -121,6 +136,22 @@ public class LoginScreen extends javax.swing.JFrame {
         su.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_SignupbuttonActionPerformed
+
+    private void LoginbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoginbuttonActionPerformed
+        String Username = Usernametext.getText();
+        String Password = Passwordtext.getText();
+        if(!repository.UserLogIn(Username, Password)){
+            incorrectinput.setVisible(true);
+        } else {
+            Mainmenu main = new Mainmenu();
+            main.setVisible(true);
+            this.dispose();
+        }
+    }//GEN-LAST:event_LoginbuttonActionPerformed
+
+    private void PasswordtextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PasswordtextActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_PasswordtextActionPerformed
 
     /**
      * @param args the command line arguments
@@ -159,9 +190,10 @@ public class LoginScreen extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Loginbutton;
-    private javax.swing.JTextField Passwordtext;
+    private javax.swing.JPasswordField Passwordtext;
     private javax.swing.JButton Signupbutton;
     private javax.swing.JTextField Usernametext;
+    private javax.swing.JLabel incorrectinput;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
