@@ -5,6 +5,7 @@
  */
 package revisionnea;
 
+import java.util.Random;
 import javax.swing.JOptionPane;
 
 /**
@@ -12,10 +13,8 @@ import javax.swing.JOptionPane;
  * @author BG201054
  */
 public class SignupScreen extends javax.swing.JFrame {
+
     
-    /**
-     * Creates new form SignupScreen
-     */
     public SignupScreen() {
         initComponents();
     }
@@ -49,8 +48,6 @@ public class SignupScreen extends javax.swing.JFrame {
         SchoolsList = new javax.swing.JList<>();
         PasswordTF = new javax.swing.JPasswordField();
         ConfPswd = new javax.swing.JPasswordField();
-        jLabel10 = new javax.swing.JLabel();
-        VerificationCode = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -88,8 +85,6 @@ public class SignupScreen extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(SchoolsList);
 
-        jLabel10.setText("Verification code:");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -107,8 +102,7 @@ public class SignupScreen extends javax.swing.JFrame {
                                     .addComponent(jLabel6)
                                     .addComponent(jLabel7)
                                     .addComponent(jLabel8)
-                                    .addComponent(jLabel9)
-                                    .addComponent(jLabel10))
+                                    .addComponent(jLabel9))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(NameTF, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
@@ -117,8 +111,7 @@ public class SignupScreen extends javax.swing.JFrame {
                                     .addComponent(ConfEmail)
                                     .addComponent(jScrollPane1)
                                     .addComponent(PasswordTF)
-                                    .addComponent(ConfPswd)
-                                    .addComponent(VerificationCode)))
+                                    .addComponent(ConfPswd)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(59, 59, 59)
                                 .addComponent(jLabel2))))
@@ -167,11 +160,7 @@ public class SignupScreen extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel9)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
-                    .addComponent(VerificationCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(51, 51, 51)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 129, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
                     .addComponent(jButton1))
@@ -181,6 +170,8 @@ public class SignupScreen extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private boolean i = true;
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String name = NameTF.getText();
         String username = UsernameTF.getText();
@@ -189,13 +180,21 @@ public class SignupScreen extends javax.swing.JFrame {
         String useremail = EmailTF.getText();
         String useremailconf = ConfEmail.getText();
         String userSchool = SchoolsList.getSelectedValue();
-        if(password.equals(confpswrd) && useremail.equals(useremailconf)){
-            
+        if (password.equals(confpswrd) && useremail.equals(useremailconf)) {
+
             String Hpassword = hashing.Hashpassword(password);
-            User newuser = new User(name,username,Hpassword,useremail,userSchool);
-            
+            User newuser = new User(name, username, Hpassword, useremail, userSchool);
+            Random random = new Random();
+            int verificationnum = random.nextInt(999999 - 100000) + 100000;
+            try {
+                Sendemail.sendMail(useremail, verificationnum);
+            } catch (Exception e) {
+            }
+            Verification vf = new Verification(verificationnum);
+            vf.setVisible(i);
+
             repository.insertNewUser(newuser);
-            JOptionPane.showMessageDialog(null, "Welcome "+name+"!");
+            JOptionPane.showMessageDialog(null, "Welcome " + name + "!");
             LoginScreen x = new LoginScreen();
             x.setVisible(true);
             this.dispose();
@@ -245,11 +244,9 @@ public class SignupScreen extends javax.swing.JFrame {
     private javax.swing.JPasswordField PasswordTF;
     private javax.swing.JList<String> SchoolsList;
     private javax.swing.JTextField UsernameTF;
-    private javax.swing.JTextField VerificationCode;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

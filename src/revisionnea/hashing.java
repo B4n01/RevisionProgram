@@ -12,11 +12,11 @@ public class hashing {
         String hashedpassword = null;
         try {
             // Create MessageDigest instance for MD5
-            MessageDigest MD = MessageDigest.getInstance("MD5");
+            MessageDigest hash = MessageDigest.getInstance("MD5");
             //Add password bytes to digest
-            MD.update(passwordToHash.getBytes());
+            hash.update(passwordToHash.getBytes());
             //Get the hash's bytes 
-            byte[] bytes = MD.digest();
+            byte[] bytes = hash.digest();
             //This bytes[] has bytes in decimal format;
             //Convert it to hexadecimal format
             StringBuilder sb = new StringBuilder();
