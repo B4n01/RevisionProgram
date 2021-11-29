@@ -12,6 +12,7 @@ public class repository {
     private static final String DatabaseLocation = System.getProperty("user.dir") + "\\RevisionNEA.accdb";
     private static Connection con;
     private static User currentUser;
+    public static boolean correctverficationcode;
      public static Connection getConnection() {
         try {
             con = DriverManager.getConnection("jdbc:ucanaccess://" + DatabaseLocation, "", "");

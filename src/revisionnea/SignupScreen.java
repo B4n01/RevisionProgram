@@ -6,6 +6,7 @@
 package revisionnea;
 
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 import javax.swing.JOptionPane;
 
 /**
@@ -14,7 +15,6 @@ import javax.swing.JOptionPane;
  */
 public class SignupScreen extends javax.swing.JFrame {
 
-    
     public SignupScreen() {
         initComponents();
     }
@@ -175,8 +175,8 @@ public class SignupScreen extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String name = NameTF.getText();
         String username = UsernameTF.getText();
-        String password = PasswordTF.getText();
-        String confpswrd = ConfPswd.getText();
+        String password = new String(PasswordTF.getPassword());
+        String confpswrd = new String(ConfPswd.getPassword());
         String useremail = EmailTF.getText();
         String useremailconf = ConfEmail.getText();
         String userSchool = SchoolsList.getSelectedValue();
@@ -190,14 +190,17 @@ public class SignupScreen extends javax.swing.JFrame {
                 Sendemail.sendMail(useremail, verificationnum);
             } catch (Exception e) {
             }
+            repository.correctverficationcode = false;
             Verification vf = new Verification(verificationnum);
             vf.setVisible(i);
-
-            repository.insertNewUser(newuser);
-            JOptionPane.showMessageDialog(null, "Welcome " + name + "!");
-            LoginScreen x = new LoginScreen();
-            x.setVisible(true);
-            this.dispose();
+            
+            if (repository.correctverficationcode == true) {
+                repository.insertNewUser(newuser);
+                JOptionPane.showMessageDialog(null, "Welcome " + name + "!");
+                LoginScreen x = new LoginScreen();
+                x.setVisible(true);
+                this.dispose();
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
